@@ -5,36 +5,171 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b6b57">
   <title>Pay Joseph JebaRaj</title>
-  <meta name="description" content="Pay Joseph JebaRaj using your preferred UPI app.">
+  <meta name="description" content="Pay Joseph JebaRaj using Google Pay, PhonePe, Paytm, BHIM or any UPI app.">
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 16px;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       background: #f3f7f6; color: #17211f; }
-    main { width: min(100%, 440px); background: white; border: 1px solid #e3ebe8;
-      border-radius: 22px; padding: 28px; box-shadow: 0 12px 35px #1233; }
-    .mark { width: 54px; height: 54px; display:grid; place-items:center; border-radius:16px;
-      background:#e4f4ef; color:#08765e; font-size:28px; }
-    h1 { font-size: 25px; margin: 18px 0 5px; }
-    .muted { color:#64716d; line-height:1.5; }
-    .upi { background:#f5f8f7; border:1px solid #e5ece9; padding:13px; border-radius:12px;
-      overflow-wrap:anywhere; margin:18px 0; }
-    .upi strong { display:block; font-size:13px; color:#64716d; margin-bottom:5px; }
-    a.pay { display:block; text-decoration:none; text-align:center; padding:14px 16px;
-      border-radius:12px; margin:10px 0; font-weight:650; color:white; background:#08765e; }
-    a.alt { color:#08765e; background:#eaf5f1; }
-    .note { font-size:12px; margin-top:18px; }
+    main { width: min(100%, 440px); background: #fff; border: 1px solid #e3ebe8;
+      border-radius: 22px; padding: 24px; box-shadow: 0 12px 35px #12333322; }
+    .head { display: flex; align-items: center; gap: 14px; }
+    .mark { width: 50px; height: 50px; flex: none; display: grid; place-items: center; border-radius: 15px;
+      background: #e4f4ef; color: #08765e; font-size: 26px; font-weight: 700; }
+    h1 { font-size: 22px; margin: 0; }
+    .muted { color: #64716d; line-height: 1.5; margin: 2px 0 0; font-size: 14px; }
+    .upi { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      background: #f5f8f7; border: 1px solid #e5ece9; padding: 12px 14px; border-radius: 12px; margin: 18px 0 14px; }
+    .upi small { display: block; font-size: 12px; color: #64716d; margin-bottom: 3px; }
+    .upi span { overflow-wrap: anywhere; font-weight: 600; }
+    button { font: inherit; cursor: pointer; }
+    .copy { flex: none; border: 1px solid #cfe3dc; background: #fff; color: #08765e;
+      border-radius: 10px; padding: 8px 12px; font-weight: 600; font-size: 14px; }
+    label { display: block; font-size: 13px; color: #64716d; margin-bottom: 6px; }
+    .amt { display: flex; align-items: center; border: 1px solid #d7e3df; border-radius: 12px; padding: 0 12px; }
+    .amt:focus-within { border-color: #08765e; box-shadow: 0 0 0 3px #08765e22; }
+    .amt b { color: #64716d; font-weight: 600; }
+    .amt input { flex: 1; border: 0; outline: 0; font: inherit; font-size: 18px; padding: 12px 8px; min-width: 0; background: transparent; color: inherit; }
+    h2 { font-size: 15px; margin: 20px 0 10px; }
+    .apps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    a.app { display: flex; flex-direction: column; align-items: center; gap: 7px; text-decoration: none; color: #17211f;
+      border: 1px solid #e3ebe8; border-radius: 14px; padding: 12px 4px; font-size: 13px; font-weight: 600; text-align: center;
+      transition: border-color .15s, transform .15s; }
+    a.app:active { transform: scale(.97); }
+    a.app:hover { border-color: #08765e; }
+    .ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 15px; }
+    .any { grid-column: 1 / -1; flex-direction: row !important; justify-content: center; background: #08765e; color: #fff !important; border-color: #08765e !important; padding: 14px !important; font-size: 15px !important; }
+    #qrbox { display: none; text-align: center; margin-top: 18px; }
+    #qr { display: inline-block; padding: 12px; background: #fff; border: 1px solid #e3ebe8; border-radius: 14px; }
+    #qr img, #qr canvas { display: block; }
+    .toggle { background: none; border: 0; color: #08765e; font-weight: 600; margin-top: 14px; padding: 4px; }
+    .note { font-size: 12px; margin-top: 16px; }
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #17211f; color: #fff;
+      padding: 10px 16px; border-radius: 10px; font-size: 14px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+    .toast.show { opacity: 1; }
+    .desktop .apps, .desktop h2.pick { display: none; }
+    .desktop #qrbox { display: block; }
   </style>
 </head>
 <body>
-<main>
-  <div class="mark" aria-hidden="true">₹</div>
-  <h1>Pay Joseph JebaRaj</h1>
-  <p class="muted">Choose your preferred UPI app. Your app will open with the payment details filled in. Please verify the recipient before paying.</p>
-  <div class="upi"><strong>UPI ID</strong>josephjoe.2210-4@okaxis</div>
-  <a class="pay" href="upi://pay?pa=josephjoe.2210-4%40okaxis&amp;pn=Joseph%20JebaRaj&amp;cu=INR">Open any UPI app</a>
-  <a class="pay alt" href="tez://upi/pay?pa=josephjoe.2210-4%40okaxis&amp;pn=Joseph%20JebaRaj&amp;aid=uGICAgIDVt9GeEA">Google Pay</a>
-  <p class="muted note">If an app does not open, copy the UPI ID above and pay from your UPI app. App availability depends on your device and installed apps. Never share your UPI PIN or approve a collect request you did not initiate.</p>
+<main id="card">
+  <div class="head">
+    <div class="mark" aria-hidden="true">₹</div>
+    <div>
+      <h1>Pay Joseph JebaRaj</h1>
+      <p class="muted">Choose an app to pay with</p>
+    </div>
+  </div>
+
+  <div class="upi">
+    <div><small>UPI ID</small><span id="vpa">josephjoe.2210-4@okaxis</span></div>
+    <button class="copy" id="copy" type="button">Copy</button>
+  </div>
+
+  <label for="amount">Amount (optional)</label>
+  <div class="amt"><b>₹</b><input id="amount" type="number" inputmode="decimal" min="1" step="0.01" placeholder="Enter amount"></div>
+
+  <h2 class="pick">Pay with</h2>
+  <div class="apps" id="apps"></div>
+
+  <div id="qrbox">
+    <h2>Scan with any UPI app</h2>
+    <div id="qr"></div>
+  </div>
+  <div style="text-align:center"><button class="toggle" id="qrtoggle" type="button">Show QR code</button></div>
+
+  <p class="muted note">If an app doesn't open, copy the UPI ID and pay from your UPI app. Check the recipient name before you pay. Never share your UPI PIN, and never approve a collect request you didn't start.</p>
 </main>
+<div class="toast" id="toast">UPI ID copied</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  var VPA = 'josephjoe.2210-4@okaxis';
+  var NAME = 'Joseph JebaRaj';
+  var ua = navigator.userAgent || '';
+  var isAndroid = /android/i.test(ua);
+  var isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var isMobile = isAndroid || isIOS;
+
+  // pkg = Android package (opens that exact app, falls back to Play Store if missing)
+  // ios = iOS URL scheme prefix (null = not offered on iOS)
+  var APPS = [
+    { name: 'Google Pay', short: 'G',  color: '#4285f4', pkg: 'com.google.android.apps.nbu.paisa.user', ios: 'gpay://upi/pay?' },
+    { name: 'PhonePe',    short: 'Pe', color: '#5f259f', pkg: 'com.phonepe.app',                          ios: 'phonepe://pay?' },
+    { name: 'Paytm',      short: 'P',  color: '#00b9f1', pkg: 'net.one97.paytm',                          ios: 'paytmmp://pay?' },
+    { name: 'BHIM',       short: 'B',  color: '#f37021', pkg: 'in.org.npci.upiapp',                       ios: null },
+    { name: 'Amazon Pay', short: 'a',  color: '#232f3e', pkg: 'in.amazon.mShop.android.shopping',         ios: null },
+    { name: 'CRED',       short: 'C',  color: '#111111', pkg: 'com.dreamplug.androidapp',                 ios: null }
+  ];
+
+  function query() {
+    var q = 'pa=' + encodeURIComponent(VPA) + '&pn=' + encodeURIComponent(NAME) + '&cu=INR';
+    var a = parseFloat(document.getElementById('amount').value);
+    if (a > 0) q += '&am=' + a.toFixed(2);
+    return q;
+  }
+
+  function linkFor(app) {
+    var q = query();
+    if (!app) { // "any UPI app" -> Android shows the system app chooser
+      return isAndroid ? 'intent://pay?' + q + '#Intent;scheme=upi;end' : 'upi://pay?' + q;
+    }
+    if (isAndroid) {
+      var store = 'https://play.google.com/store/apps/details?id=' + app.pkg;
+      return 'intent://pay?' + q + '#Intent;scheme=upi;package=' + app.pkg +
+             ';S.browser_fallback_url=' + encodeURIComponent(store) + ';end';
+    }
+    return app.ios + q;
+  }
+
+  var appsEl = document.getElementById('apps');
+  var visible = APPS.filter(function (a) { return !isIOS || a.ios; });
+  visible.forEach(function (app) {
+    var el = document.createElement('a');
+    el.className = 'app';
+    el.dataset.idx = APPS.indexOf(app);
+    el.innerHTML = '<span class="ico" style="background:' + app.color + '">' + app.short + '</span>' + app.name;
+    appsEl.appendChild(el);
+  });
+  var any = document.createElement('a');
+  any.className = 'app any';
+  any.textContent = 'Other UPI app';
+  appsEl.appendChild(any);
+
+  var qr = null;
+  function refresh() {
+    appsEl.querySelectorAll('a.app').forEach(function (el) {
+      el.href = el.dataset.idx ? linkFor(APPS[+el.dataset.idx]) : linkFor(null);
+    });
+    if (window.QRCode) {
+      var text = 'upi://pay?' + query();
+      if (!qr) qr = new QRCode(document.getElementById('qr'), { text: text, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.M });
+      else { qr.clear(); qr.makeCode(text); }
+    }
+  }
+
+  document.getElementById('amount').addEventListener('input', refresh);
+
+  var qrbox = document.getElementById('qrbox'), toggle = document.getElementById('qrtoggle');
+  if (!isMobile) { document.getElementById('card').classList.add('desktop'); toggle.style.display = 'none'; }
+  toggle.addEventListener('click', function () {
+    var open = qrbox.style.display === 'block';
+    qrbox.style.display = open ? 'none' : 'block';
+    toggle.textContent = open ? 'Show QR code' : 'Hide QR code';
+  });
+
+  document.getElementById('copy').addEventListener('click', function () {
+    var t = document.getElementById('toast');
+    function done() { t.classList.add('show'); setTimeout(function () { t.classList.remove('show'); }, 1600); }
+    if (navigator.clipboard) navigator.clipboard.writeText(VPA).then(done, fallback); else fallback();
+    function fallback() {
+      var r = document.createRange(); r.selectNodeContents(document.getElementById('vpa'));
+      var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      try { document.execCommand('copy'); done(); } catch (e) {}
+    }
+  });
+
+  refresh();
+</script>
 </body>
 </html>
