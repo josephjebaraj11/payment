@@ -31,14 +31,16 @@
     .amt b { color: #64716d; font-weight: 600; }
     .amt input { flex: 1; border: 0; outline: 0; font: inherit; font-size: 18px; padding: 12px 8px; min-width: 0; background: transparent; color: inherit; }
     h2 { font-size: 15px; margin: 20px 0 10px; }
-    .apps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    a.app { display: flex; flex-direction: column; align-items: center; gap: 7px; text-decoration: none; color: #17211f;
-      border: 1px solid #e3ebe8; border-radius: 14px; padding: 12px 4px; font-size: 13px; font-weight: 600; text-align: center;
+    .apps { display: grid; gap: 10px; }
+    a.app { display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; color: #17211f;
+      border: 1px solid #e3ebe8; border-radius: 14px; padding: 0 16px; height: 60px; background: #fff;
       transition: border-color .15s, transform .15s; }
-    a.app:active { transform: scale(.97); }
+    a.app:active { transform: scale(.98); }
     a.app:hover { border-color: #08765e; }
-    .ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 15px; }
-    .any { grid-column: 1 / -1; flex-direction: row !important; justify-content: center; background: #08765e; color: #fff !important; border-color: #08765e !important; padding: 14px !important; font-size: 15px !important; }
+    a.app img { height: 28px; width: auto; max-width: 70%; display: block; }
+    a.app img[alt="PhonePe"] { height: 38px; margin-left: -4px; }
+    a.app .go { color: #9aa8a4; font-size: 24px; line-height: 1; }
+    .any { justify-content: center !important; background: #08765e !important; color: #fff !important; border-color: #08765e !important; font-size: 15px; font-weight: 650; }
     #qrbox { display: none; text-align: center; margin-top: 18px; }
     #qr { display: inline-block; padding: 12px; background: #fff; border: 1px solid #e3ebe8; border-radius: 14px; }
     #qr img, #qr canvas { display: block; }
@@ -94,12 +96,11 @@
   // pkg = Android package (opens that exact app, falls back to Play Store if missing)
   // ios = iOS URL scheme prefix (null = not offered on iOS)
   var APPS = [
-    { name: 'Google Pay', short: 'G',  color: '#4285f4', pkg: 'com.google.android.apps.nbu.paisa.user', ios: 'gpay://upi/pay?' },
-    { name: 'PhonePe',    short: 'Pe', color: '#5f259f', pkg: 'com.phonepe.app',                          ios: 'phonepe://pay?' },
-    { name: 'Paytm',      short: 'P',  color: '#00b9f1', pkg: 'net.one97.paytm',                          ios: 'paytmmp://pay?' },
-    { name: 'BHIM',       short: 'B',  color: '#f37021', pkg: 'in.org.npci.upiapp',                       ios: null },
-    { name: 'Amazon Pay', short: 'a',  color: '#232f3e', pkg: 'in.amazon.mShop.android.shopping',         ios: null },
-    { name: 'CRED',       short: 'C',  color: '#111111', pkg: 'com.dreamplug.androidapp',                 ios: null }
+    { name: 'Google Pay', logo: 'logos/gpay.svg',      pkg: 'com.google.android.apps.nbu.paisa.user', ios: 'gpay://upi/pay?' },
+    { name: 'PhonePe',    logo: 'logos/phonepe.svg',   pkg: 'com.phonepe.app',                          ios: 'phonepe://pay?' },
+    { name: 'Paytm',      logo: 'logos/paytm.svg',     pkg: 'net.one97.paytm',                          ios: 'paytmmp://pay?' },
+    { name: 'BHIM',       logo: 'logos/bhim.svg',      pkg: 'in.org.npci.upiapp',                       ios: null },
+    { name: 'Amazon Pay', logo: 'logos/amazonpay.svg', pkg: 'in.amazon.mShop.android.shopping',         ios: null }
   ];
 
   function query() {
@@ -128,7 +129,8 @@
     var el = document.createElement('a');
     el.className = 'app';
     el.dataset.idx = APPS.indexOf(app);
-    el.innerHTML = '<span class="ico" style="background:' + app.color + '">' + app.short + '</span>' + app.name;
+    el.setAttribute('aria-label', 'Pay with ' + app.name);
+    el.innerHTML = '<img src="' + app.logo + '" alt="' + app.name + '"><span class="go" aria-hidden="true">›</span>';
     appsEl.appendChild(el);
   });
   var any = document.createElement('a');
